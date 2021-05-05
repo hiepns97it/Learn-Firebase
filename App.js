@@ -1,14 +1,60 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+var Firebase = require('firebase');
+
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    var root = new Firebase("https://demoreactnt-default-rtdb.firebaseio.com/");
+    this.itemsRef = root;
+  }
+
+  saveSet() {
+    this.itemsRef.set({
+      reactNative: "HiepsNS",
+      Firebase: "React Native",
+      IOS: "oki main"
+    })
+  }
+
+  savePush() {
+    this.itemsRef.child("TEST PUT").push({
+      PUSH: "Firebase test push"
+    })
+  }
+
+  addData() {
+    // this.itemsRef.child("HiepNS/IOS").once("value", function (snapshot) {
+    //   alert(snapshot.val());
+    // })
+    this.itemsRef.child("HiepNS").once("value")
+      .then(function (snapshot) {
+        debugger
+        alert(snapshot.val());
+      });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        {/* <TouchableOpacity onPress={() => this.saveSet()}>
+          <Text>Lưa dữ liệu firebase Set()</Text>
+        </TouchableOpacity> */}
+
+        {/* <TouchableOpacity onPress={() => this.savePush()}>
+          <Text>Lưa dữ liệu firebase Put()</Text>
+        </TouchableOpacity> */}
+
+        <TouchableOpacity onPress={() => this.addData()}>
+          <Text>Lưa dữ liệu firebase AddData()</Text>
+        </TouchableOpacity>
+
+      </View>
+    );
+  }
+
 }
 
 const styles = StyleSheet.create({
